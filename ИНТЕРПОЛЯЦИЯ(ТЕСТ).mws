@@ -1,0 +1,124 @@
+restart;a:=-2; b:=1; n:=3; xc:=0.5; yc:=-5;
+
+                               a := -2
+
+
+                                b := 1
+
+
+                                n := 3
+
+
+                              xc := 0.5
+
+
+                               yc := -5
+
+> X[0]:=-2; F[0]:= -15; X[1]:=-1; F[1]:= -4; X[2]:= 0; F[2]:= -1; X[3]:= 1; F[3]:= 0;
+
+                              X[0] := -2
+
+
+                             F[0] := -15
+
+
+                              X[1] := -1
+
+
+                              F[1] := -4
+
+
+                              X[2] := 0
+
+
+                              F[2] := -1
+
+
+                              X[3] := 1
+
+
+                              F[3] := 0
+
+>  
+
+                   L_F := [F[0], F[1], F[2], F[3]]
+
+> # построение ИМ Лагранжа для функции F(x)
+> Lagr:=proc(n, X, F)
+>     local i, j, Sm, P, Lg;
+>     Sm:=0:
+>     for i from 0 to n do 
+>         P:=1:
+>         for j from 0 to n do 
+>             if j<>i then 
+>                 # Формула полинома: (x - x_j) / (x_i - x_j)
+>                 P:=P*(x - X[j]) / (X[i] - X[j]); 
+>             end if: 
+>         end do:
+>         # Суммирование значений функции, домноженных на базисные полиномы 
+>         Sm:=Sm + F[i]*P: 
+>     end do:
+>     Lg:=simplify(Sm);
+>     return(Lg);
+>   end proc;
+
+  Lagr := proc(n, X, F)
+local i, j, Sm, P, Lg;
+    Sm := 0;
+    for i from 0 to n do
+        P := 1;
+        for j from 0 to n do
+            if j <> i then P := P*(x - X[j])/(X[i] - X[j])
+            end if
+        end do;
+        Sm := Sm + F[i]*P
+    end do;
+    Lg := simplify(Sm);
+    return Lg
+end proc
+
+> # Вызов процедуры
+> Lg3 := Lagr(n, X, F);
+
+                                3        2
+                        Lg3 := x  + x - x  - 1
+
+> subs(x=xc,Lg3);
+
+                                -0.625
+
+> n:= 1;
+
+                                n := 1
+
+> X[0]:=-2; F[0]:= -15; X[1]:=-1; F[1]:= -4;
+
+                              X[0] := -2
+
+
+                             F[0] := -15
+
+
+                              X[1] := -1
+
+
+                              F[1] := -4
+
+> Lg1:= Lagr(n, F, X);
+
+                                  x
+                          Lg1 := ---- - 7/11
+                                  11
+
+> subs(x=yc,Lg1);
+
+                                 -12
+                                 ---
+                                 11
+
+>  with(plots):
+> gr1:=plot(Lg3, x=a..b, color=red):
+> gr2:=plot(x^3 + 1, x=a..b, color=blue):
+> display(gr1, gr2);
+
+> 
